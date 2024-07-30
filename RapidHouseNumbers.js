@@ -22,6 +22,8 @@
   const scriptName = GM_info.script.name;
   const { version } = GM_info.script;
 
+
+  
   console.log(`${scriptName}: Loading `);
 
   // Display change log immediately as it has no dependencies on waze itself.
@@ -52,6 +54,8 @@
     { version: "2.7", message: "Minor version check fix." },
   ];
 
+
+  
   const ALL_DIGITS = /^[0-9]+$/;
   const DIG_ALPHA = /^([0-9]+)([A-Z]$)/i;
   const DIG_DASH_DIG = /^([0-9]+-)([0-9]+)$/;
