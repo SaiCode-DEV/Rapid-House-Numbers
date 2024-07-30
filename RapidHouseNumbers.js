@@ -50,8 +50,6 @@
     { version: "2.6", message: "Fixed bug when re entering HN editor." },
     { version: "2.7", message: "Minor version check fix." },
   ];
-
-
   
   const ALL_DIGITS = /^[0-9]+$/;
   const DIG_ALPHA = /^([0-9]+)([A-Z]$)/i;
