@@ -488,6 +488,10 @@
         }
 
         secondary = node;
+
+
+
+        
       }
 
       if (secondary === null) {
