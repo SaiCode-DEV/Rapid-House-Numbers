@@ -28,24 +28,56 @@
   const changeLog = [
     { version: "1.0", message: "Initial Version" },
     { version: "1.1", message: "The changelog now handles missing entries." },
-    { version: "1.2", message: "Now does full reset when exiting House Number Editor." },
+    {
+      version: "1.2",
+      message: "Now does full reset when exiting House Number Editor.",
+    },
     { version: "1.3", message: "Fixed typo in change log." },
-    { version: "1.4", message: "The accelerator key bindings are removed upon exiting the House Number editor." },
-    { version: "1.5", message: "The primary accelerator has been changed from 'a' to 'h'.  The keys '1' .. '9' are now accelerators that create the next house number then increment next by the value of the key." },
-    { version: "1.6", message: "Disabled numeric accelerators in text fields." },
-    { version: "1.7", message: "Added support for numpads.  Event handler now removed when the House Number editor is exited." },
+    {
+      version: "1.4",
+      message:
+        "The accelerator key bindings are removed upon exiting the House Number editor.",
+    },
+    {
+      version: "1.5",
+      message:
+        "The primary accelerator has been changed from 'a' to 'h'.  The keys '1' .. '9' are now accelerators that create the next house number then increment next by the value of the key.",
+    },
+    {
+      version: "1.6",
+      message: "Disabled numeric accelerators in text fields.",
+    },
+    {
+      version: "1.7",
+      message:
+        "Added support for numpads.  Event handler now removed when the House Number editor is exited.",
+    },
     { version: "1.8", message: "Removed info dialog." },
     { version: "1.9", message: "Increased width of increment field." },
-    { version: "1.10", message: "The increment is now persisted between sessions." },
+    {
+      version: "1.10",
+      message: "The increment is now persisted between sessions.",
+    },
     { version: "1.11", message: "Added missing dependencies to rapidHN." },
     { version: "1.12", message: "Added support for HN such as 7A and 10-5." },
-    { version: "1.13", message: "Added control to enable/disable alphanumeric HN. Pressing <enter> on the next HN field will switch the focus to the map so that you can then press <h> to direct the editor to add a house number to the map." },
+    {
+      version: "1.13",
+      message:
+        "Added control to enable/disable alphanumeric HN. Pressing <enter> on the next HN field will switch the focus to the map so that you can then press <h> to direct the editor to add a house number to the map.",
+    },
     { version: "1.14", message: "Restored accelerators." },
     { version: "1.15", message: "Updated global symbols." },
     { version: "1.16", message: "Updated to latest WME" },
     { version: "1.17", message: "Resume after saving" },
-    { version: "1.18", message: "Exiting house number editor should clear the next rapid house number field in Beta WME." },
-    { version: "2.0", message: "New implementation to work with the current WME." },
+    {
+      version: "1.18",
+      message:
+        "Exiting house number editor should clear the next rapid house number field in Beta WME.",
+    },
+    {
+      version: "2.0",
+      message: "New implementation to work with the current WME.",
+    },
     { version: "2.1", message: "Minor change to work with the current WME." },
     { version: "2.5", message: "Firefox compatibility and Style update." },
     { version: "2.6", message: "Fixed bug when re entering HN editor." },
@@ -82,7 +114,9 @@
 
       // Find the index of the previous version in the change log
       if (previousVersion) {
-        startIndex = changeLog.findIndex(log => log.version === previousVersion);
+        startIndex = changeLog.findIndex(
+          (log) => log.version === previousVersion
+        );
         if (startIndex === -1) {
           startIndex = 0; // If not found, start from the beginning
         } else {
@@ -105,7 +139,7 @@
           scriptName,
           title,
           announcement,
-          "https://greasyfork.org/en/scripts/35931-wme-rapid-house-numbers",
+          "https://greasyfork.org/en/scripts/35931-wme-rapid-house-numbers"
         );
         window.localStorage.setItem(versionKey, version);
       }
@@ -118,12 +152,12 @@
   // Delay until Waze has been loaded.
   function rapidHNBootstrap() {
     if (
-      typeof W === "undefined"
-      || typeof W.map === "undefined"
-      || typeof W.selectionManager === "undefined"
-      || typeof I18n === "undefined"
-      || typeof I18n.translations === "undefined"
-      || $("div#primary-toolbar>div").length === 0
+      typeof W === "undefined" ||
+      typeof W.map === "undefined" ||
+      typeof W.selectionManager === "undefined" ||
+      typeof I18n === "undefined" ||
+      typeof I18n.translations === "undefined" ||
+      $("div#primary-toolbar>div").length === 0
     ) {
       console.log(`${scriptName} dependencies not ready. Waiting...`);
       setTimeout(rapidHNBootstrap, 500);
@@ -138,14 +172,16 @@
     console.log(`${scriptName} initializing.`);
 
     // Quick hack to make sure RHN controls are removed whenever HN editing mode is toggled on/off.
-    W.editingMediator.on("change:editingHouseNumbers", () => $(".rapidHN-control").remove());
+    W.editingMediator.on("change:editingHouseNumbers", () =>
+      $(".rapidHN-control").remove()
+    );
 
     // Listen for changes in the edit mode
     // The contents of div.primary-toolbar is entirely replaced when switching into, and out of, house number mode.
 
     const primaryToolbar = $("div#primary-toolbar");
     const primaryToolbarObserver = new MutationObserver(
-      handlePrimaryToolbarMutations,
+      handlePrimaryToolbarMutations
     );
     if (primaryToolbar.length) {
       primaryToolbarObserver.observe(primaryToolbar[0], {
@@ -158,10 +194,10 @@
 
     W.map.registerMapEvent(
       "zoomend",
-      event => {
+      (event) => {
         enableDisableControls(rapidHNtoolbarButton, event.object.zoom < 18);
       },
-      this,
+      this
     );
     console.log(`${scriptName} initialized.`);
   }
@@ -201,7 +237,8 @@
     enableDisableControls(rapidHNtoolbarButton, W.map.getZoom() < 18);
 
     $("button#current-input-type").click(() => {
-      let nextInputType = window.localStorage.getItem("rapidHNnextInputType") || "number";
+      let nextInputType =
+        window.localStorage.getItem("rapidHNnextInputType") || "number";
 
       nextInputType = { number: "text", text: "number" }[nextInputType];
 
@@ -210,7 +247,7 @@
     });
 
     // if the <return> key is released blur so that you can type <h> to add a house number rather than see it appended to the next value.
-    $("input.rapidHN.next").keyup(evt => {
+    $("input.rapidHN.next").keyup((evt) => {
       if (evt.which === 13) {
         this.blur();
       }
@@ -222,8 +259,9 @@
 
     $("div.rapidHN-control input").on("change", () => {
       const controls = $("div.rapidHN-control");
-      const rapidHNenabled = $("input.rapidHN.next", controls).filter(":visible").val()
-        && nonZero($("input.rapidHN.increment", controls));
+      const rapidHNenabled =
+        $("input.rapidHN.next", controls).filter(":visible").val() &&
+        nonZero($("input.rapidHN.increment", controls));
 
       if (rapidHNenabled) {
         if (houseNumbersObserver === undefined) {
@@ -232,10 +270,10 @@
           ahn.css("color", "#2196f3");
 
           // Listen for WME displaying a new HN input field
-          houseNumbersObserver = new MutationObserver(mutations => {
+          houseNumbersObserver = new MutationObserver((mutations) => {
             mutations.forEach(() => {
               const input = $(
-                "div.olLayerDiv.house-numbers-layer div.house-number div.content.active:not(\".new\") input.number",
+                'div.olLayerDiv.house-numbers-layer div.house-number div.content.active:not(".new") input.number'
               );
               if (input.val() === "") {
                 injectHouseNumber(input);
@@ -246,7 +284,7 @@
           });
           houseNumbersObserver.observe(
             $("div.olLayerDiv.house-numbers-layer")[0],
-            { childList: false, subtree: true, attributes: true },
+            { childList: false, subtree: true, attributes: true }
           );
 
           // Register rapidAccelerator on keydown event in map.  Use rapidHN namespace to selectively remove later.
@@ -294,7 +332,7 @@
 
   function enableDisableControls(toolbarButton, disabled) {
     if (toolbarButton) {
-      toolbarButton.childNodes.forEach(node => {
+      toolbarButton.childNodes.forEach((node) => {
         if (node.nodeName === "INPUT" && node.classList.contains("rapidHN")) {
           if (disabled) {
             node.setAttribute("disabled", "disabled");
@@ -327,8 +365,8 @@
 
           addHouseNumber = rapidHNNext.previousSibling; // recursiveSearchFor(mutation.addedNodes, ['add-house-number']);
           if (
-            addHouseNumber
-            && !addHouseNumber.classList.contains("ItemDisabled")
+            addHouseNumber &&
+            !addHouseNumber.classList.contains("ItemDisabled")
           ) {
             rapidHnNext = rapidHNNext.value;
           }
@@ -437,16 +475,16 @@
       let acceleratorSelected = false;
 
       if (
-        event.target.localName !== "input"
-        && ONE <= event.which
-        && event.which <= NINE
+        event.target.localName !== "input" &&
+        ONE <= event.which &&
+        event.which <= NINE
       ) {
         oneTimeIncrement = event.which - ONE + 1;
         acceleratorSelected = true;
       } else if (
-        event.target.localName !== "input"
-        && NUMPAD1 <= event.which
-        && event.which <= NUMPAD9
+        event.target.localName !== "input" &&
+        NUMPAD1 <= event.which &&
+        event.which <= NUMPAD9
       ) {
         oneTimeIncrement = event.which - NUMPAD1 + 1;
         acceleratorSelected = true;
@@ -471,11 +509,11 @@
   function recursiveSearchFor(nodeList, classNames) {
     let secondary = null;
 
-    $(nodeList).each(node => {
+    $(nodeList).each((node) => {
       if (
-        node.classList
-        && classNames.findIndex(
-          className => !node.classList.contains(className),
+        node.classList &&
+        classNames.findIndex(
+          (className) => !node.classList.contains(className)
         ) === -1
       ) {
         const { display } = window.getComputedStyle(node);
@@ -502,7 +540,8 @@
   }
 
   function updateRapidHNnextVisibility(showTooltip) {
-    const nextInputType = window.localStorage.getItem("rapidHNnextInputType") || "number";
+    const nextInputType =
+      window.localStorage.getItem("rapidHNnextInputType") || "number";
     const inputs = $("input.rapidHN.next");
 
     inputs.hide();
@@ -510,12 +549,12 @@
     nextInput.show();
 
     $("button#current-input-type").text(
-      { number: "1", text: "A" }[nextInputType],
+      { number: "1", text: "A" }[nextInputType]
     );
 
     if (showTooltip) {
       // hide both tooltips
-      ["number", "text"].forEach(type => {
+      ["number", "text"].forEach((type) => {
         const tooltip = $(`span#rapidHN-input-is-${type}`);
         tooltip.hide();
       });
